@@ -12,8 +12,12 @@ import java.util.Optional;
 
 @Service
 public class MemberService {
-    @Autowired
-    MemberRepository memberRepository;
+    final MemberRepository memberRepository;
+
+    public MemberService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
+
 
     public List<Member> getAllMembers() {
         return memberRepository.findAll();
@@ -45,4 +49,5 @@ public class MemberService {
     public void deleteMemberEntry(long id) {
         memberRepository.deleteById(id);
     }
+
 }

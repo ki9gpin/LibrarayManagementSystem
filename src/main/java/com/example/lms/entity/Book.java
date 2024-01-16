@@ -1,30 +1,32 @@
 package com.example.lms.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-import java.time.Year;
+import java.util.Date;
 
 @Entity
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "custom_isbn_generator")
     private long id;
-    //TODO : Handle ISBN properly
     private String ISBN;
     private String title;
     private String author;
     private String genre;
+//    private long   pages;
     private String publisher;
-    private Year year;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MMM dd, yyyy"/*"dd-MM-yyyy"*/)
+    private Date year;
     private long availableCopies;
 
     public Book() {
     }
 
-    public Book(String ISBN, String title, String author, String genre, String publisher, Year year, long availableCopies) {
+    public Book(String ISBN, String title, String author, String genre, String publisher, Date year, long availableCopies) {
         System.out.println("isbn length "+ISBN.length());
         this.ISBN = ISBN;
         this.title = title;
@@ -75,11 +77,11 @@ public class Book {
         this.publisher = publisher;
     }
 
-    public Year getYear() {
+    public Date getYear() {
         return year;
     }
 
-    public void setYear(Year year) {
+    public void setYear(Date year) {
         this.year = year;
     }
 

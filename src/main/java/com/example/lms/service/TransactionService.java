@@ -1,8 +1,8 @@
 package com.example.lms.service;
 
+import com.example.lms.dto.TransactionDTO;
 import com.example.lms.entity.Transaction;
 import com.example.lms.repository.TransactionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -12,8 +12,11 @@ import java.util.Optional;
 @Service
 public class TransactionService {
 
-    @Autowired
-    TransactionRepository transactionRepository;
+    final TransactionRepository transactionRepository;
+
+    public TransactionService(TransactionRepository transactionRepository) {
+        this.transactionRepository = transactionRepository;
+    }
 
     public List<Transaction> getAllTransactions() {
         return transactionRepository.findAll();
@@ -28,17 +31,24 @@ public class TransactionService {
         return transactionRepository.findTransactionByBookISBN(isbn);
     }
 
-    public Transaction checkOut(Transaction transaction, long userId, String isbn) {
-        transaction.setBookISBN(isbn);
-        transaction.setUserId(userId);
-        transaction.setCheckedOutDate(LocalDateTime.now());
-        transaction.setReturnDate(null);
-        return transactionRepository.save(transaction);
+    public Transaction checkOut(TransactionDTO transactionDTO) {
+        if(transactionDTO.getBookISBN()!=null){
+
+            Transaction transaction = new Transaction();
+            transaction.setBookISBN(transactionDTO.getBookISBN());
+            transaction.setUserId(transactionDTO.getUserId());
+            transaction.setCheckedOutDate(LocalDateTime.now());
+            transaction.setReturnDate(null);
+            return transactionRepository.save(transaction);
+        }
+        else return null;
     }
 
-    public Transaction returnBook(long userId, String isbn) {
-        Transaction transaction =  transactionRepository.findTransactionByBookISBNAndUserId(isbn,userId);
+    public Transaction returnBook(TransactionDTO transactionDTO) {
+        Transaction transaction =  transactionRepository.findTransactionByBookISBNAndUserId(transactionDTO.getBookISBN(), transactionDTO.getUserId());
         transaction.setReturnDate(LocalDateTime.now());
         return transactionRepository.save(transaction);
     }
+
+
 }

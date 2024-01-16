@@ -1,23 +1,23 @@
 package com.example.lms.controller;
 
+import com.example.lms.dto.TransactionDTO;
 import com.example.lms.entity.Transaction;
 import com.example.lms.service.TransactionService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/transactions")
 public class TransactionController {
 
-    @Autowired
-    TransactionService transactionService;
+    final TransactionService transactionService;
 
-    @Autowired
-    Transaction transaction;
+    public TransactionController(TransactionService transactionService, Transaction transaction) {
+        this.transactionService = transactionService;
+    }
 
     @GetMapping("")
     public List<Transaction> getAllTransactions(){
@@ -35,13 +35,14 @@ public class TransactionController {
     }
 
     @PostMapping("/check-out")
-    public Transaction checkOutBook(@RequestBody long userId, @RequestBody String isbn){
-        return transactionService.checkOut(transaction,userId,isbn);
+    public Transaction checkOutBook(@RequestBody TransactionDTO transactionDTO){
+        System.out.println("isbn = "+transactionDTO.getBookISBN() +" userId = "+transactionDTO.getUserId());
+        return transactionService.checkOut(transactionDTO);
     }
 
     @PutMapping("/return")
-    public Transaction returnBook(@RequestBody long userId, @RequestBody String isbn ){
-        return transactionService.returnBook(userId,isbn);
+    public Transaction returnBook(@RequestBody TransactionDTO transactionDTO){
+        return transactionService.returnBook(transactionDTO);
     }
 
 }

@@ -5,7 +5,6 @@ import com.example.lms.error.BookNotFoundException;
 import com.example.lms.service.BookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,9 +15,12 @@ import java.util.Optional;
 @RequestMapping("/api/books")
 public class BookController {
 
-    @Autowired
-    BookService bookService;
+    final BookService bookService;
     private final Logger LOGGER = LoggerFactory.getLogger(BookController.class);
+
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
 
     @GetMapping("")
     public List<Book> getAllBooks(){

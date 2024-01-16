@@ -13,8 +13,11 @@ import java.util.Optional;
 @RequestMapping("/api/members")
 public class MemberController {
 
-    @Autowired
-    MemberService memberService;
+    final MemberService memberService;
+
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
+    }
 
     @GetMapping("")
     public List<Member> getAllMembers(){
