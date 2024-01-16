@@ -32,16 +32,12 @@ public class TransactionService {
     }
 
     public Transaction checkOut(TransactionDTO transactionDTO) {
-        if(transactionDTO.getBookISBN()!=null){
-
             Transaction transaction = new Transaction();
             transaction.setBookISBN(transactionDTO.getBookISBN());
             transaction.setUserId(transactionDTO.getUserId());
             transaction.setCheckedOutDate(LocalDateTime.now());
             transaction.setReturnDate(null);
             return transactionRepository.save(transaction);
-        }
-        else return null;
     }
 
     public Transaction returnBook(TransactionDTO transactionDTO) {
@@ -49,6 +45,4 @@ public class TransactionService {
         transaction.setReturnDate(LocalDateTime.now());
         return transactionRepository.save(transaction);
     }
-
-
 }
