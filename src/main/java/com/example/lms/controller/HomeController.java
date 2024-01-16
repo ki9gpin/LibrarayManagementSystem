@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
     @GetMapping("")
     public String hello(Model model){
-        model.addAttribute("message","Hello thymeleaf");
+        model.addAttribute("message","Hello World");
         return "home";
     }
 }

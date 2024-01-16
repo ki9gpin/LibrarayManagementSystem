@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ohara</title>
-
+    <title>Ohara Library</title>
+    <script type="application/javascript" th:src = "@{/js/actions.js}"></script>
 </head>
 <body>
                 <div >
-                    <h3>Books</h3>
+                    <h3 th:text = "'Thymeleaf ' + ${message} + ' App'" >Books</h3>
                 </div>
 </body>
 </html>
