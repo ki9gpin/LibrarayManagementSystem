@@ -1,4 +1,4 @@
-package com.example.lms.controller;
+package com.example.lms.controller.api;
 
 import com.example.lms.entity.Member;
 import com.example.lms.error.MemberNotFoundException;

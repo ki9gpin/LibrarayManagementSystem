@@ -1,4 +1,4 @@
-package com.example.lms.controller;
+package com.example.lms.controller.api;
 
 import com.example.lms.entity.Book;
 import com.example.lms.error.BookNotFoundException;
@@ -6,12 +6,14 @@ import com.example.lms.service.BookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/api/books")
 public class BookController {
 
@@ -23,15 +25,16 @@ public class BookController {
     }
 
     @GetMapping("")
-    public List<Book> getAllBooks(){
+    public List<Book> getAllBooks(Model model){
         return bookService.getAllBooks();
     }
+
     @GetMapping("/{isbn}")
     public Optional<Book> getBookByISBN(@PathVariable long isbn){
         return bookService.getBookByISBN(isbn);
     }
     @PostMapping("")
-    public Book createBookEntry(@RequestBody Book book){
+    public Book createBookEntry(@ModelAttribute Book book){
         System.out.println("inside create book entry ; title = "+book.getISBN());
         return bookService.createBookEntry(book);
     }

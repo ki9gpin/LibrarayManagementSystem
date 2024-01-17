@@ -1,13 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:form="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Ohara Library</title>
     <script type="application/javascript" th:src = "@{/js/actions.js}"></script>
 </head>
 <body>
-                <div >
-                    <h3 th:text = "'Thymeleaf ' + ${message} + ' App'" >Books</h3>
-                </div>
+        <a th:href="@{/books}">Books</a>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <a th:href="@{/members}">Library Members</a>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <a th:href="@{/transactions}">Transactions</a>
 </body>
 </html>
