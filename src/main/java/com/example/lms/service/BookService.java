@@ -22,8 +22,8 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    public Optional<Book> getBookByISBN(long isbn) {
-        return bookRepository.findById(isbn);
+    public Optional<Book> getBookByISBN(String isbn) {
+        return bookRepository.findBookByISBN(isbn);
     }
 
     public Book createBookEntry(Book book) {

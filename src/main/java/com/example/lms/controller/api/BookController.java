@@ -30,7 +30,7 @@ public class BookController {
     }
 
     @GetMapping("/{isbn}")
-    public Optional<Book> getBookByISBN(@PathVariable long isbn){
+    public Optional<Book> getBookByISBN(@PathVariable String isbn){
         return bookService.getBookByISBN(isbn);
     }
     @PostMapping("")
