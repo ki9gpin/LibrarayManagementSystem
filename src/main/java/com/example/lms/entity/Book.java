@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -20,6 +21,7 @@ public class Book {
 //    private long   pages;
     private String publisher;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MMM dd, yyyy"/*"dd-MM-yyyy"*/)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date year;
     private long availableCopies;
 

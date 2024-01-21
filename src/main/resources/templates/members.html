@@ -21,7 +21,7 @@
             <a th:href="@{/}" class="btn btn-info">Home</a>
             <br>
             <br>
-            <a th:href="@{/add-book}" class="btn btn-info">Add a new Book</a>
+            <a th:href="@{/add-member}" class="btn btn-info">Add a new Member</a>
         </div>
 
     </div>
@@ -30,26 +30,19 @@
     <table  class="table p-4">
         <thead>
             <tr >
-                <td > Title </td>
-                <td > ISBN </td>
-                <td > Author </td>
-                <td > Genre </td>
-                <td > Publisher</td>
-                <td > Year </td>
-                <td > Available Copies</td>
+                <td > Name </td>
+                <td > Email </td>
+                <td > BooksCheckedOut </td>
             </tr>
         </thead>
         <tbody>
-            <tr th:each ="book : ${books}">
+            <tr th:each ="member : ${members}">
                 <td>
-                    <a th:text="${book.title}" th:href="@{/books/{isbn}(isbn=${book.ISBN})}"></a>
+<!--                    th:href="@{/members/{id}(id=${member.id})}"-->
+                    <a th:text="${member.firstName + ' ' +member.lastName}" th:href="@{/members/{id}(id=${member.id})}" ></a>
                 </td>
-                <td th:text="${book.ISBN}"></td>
-                <td th:text="${book.author}"></td>
-                <td th:text="${book.genre}"></td>
-                <td th:text="${book.publisher}"></td>
-                <td th:text="${book.year}"></td>
-                <td th:text="${book.availableCopies}"></td>
+                <td th:text="${member.email}"></td>
+                <td th:text="${member.booksCheckedOut}"></td>
             </tr>
         </tbody>
     </table>

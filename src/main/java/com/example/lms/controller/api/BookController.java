@@ -45,8 +45,8 @@ public class BookController {
     }
 
     @DeleteMapping("/{isbn}")
-    public HttpStatus deleteBookEntryByISBN(@PathVariable String isbn){
-          return bookService.deleteBookEntry(isbn);
+    public void deleteBookEntryByISBN(@PathVariable String isbn){
+        bookService.deleteBookEntry(isbn);
     }
 
 }

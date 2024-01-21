@@ -3,6 +3,7 @@ package com.example.lms.service;
 import com.example.lms.entity.Book;
 import com.example.lms.error.BookNotFoundException;
 import com.example.lms.repository.BookRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -32,14 +33,17 @@ public class BookService {
 
     public Book updateBookEntry(String isbn, Book book) throws BookNotFoundException {
         Optional<Book> optBook = bookRepository.findBookByISBN(isbn);
+        System.out.println("inside update book entry");
         if(optBook.isPresent()){
-            Book storedBook=optBook.get();
-            storedBook.setTitle(book.getTitle());
-            storedBook.setAuthor(book.getAuthor());
-            storedBook.setGenre(book.getGenre());
-            storedBook.setPublisher(book.getPublisher());
-            storedBook.setAvailableCopies(book.getAvailableCopies());
-            return bookRepository.save(storedBook);
+            System.out.println("Updating book. Book is available.");
+//            Book storedBook=optBook.get();
+            optBook.get().setTitle(book.getTitle());
+            optBook.get().setAuthor(book.getAuthor());
+            optBook.get().setGenre(book.getGenre());
+            optBook.get().setPublisher(book.getPublisher());
+            optBook.get().setYear(book.getYear());
+            optBook.get().setAvailableCopies(book.getAvailableCopies());
+            return bookRepository.save(optBook.get());
         }else{
             throw new BookNotFoundException("No book found for the provided ISBN");
         }
@@ -61,7 +65,8 @@ public class BookService {
         }
     }
 
-    public HttpStatus deleteBookEntry(String isbn) {
-        return bookRepository.deleteByISBN(isbn) ? HttpStatus.OK: HttpStatus.NOT_FOUND;
+    @Transactional
+    public void deleteBookEntry(String isbn) {
+        bookRepository.deleteByISBN(isbn);  // ? HttpStatus.OK: HttpStatus.NOT_FOUND;
     }
 }

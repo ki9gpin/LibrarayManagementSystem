@@ -10,20 +10,29 @@
 <body>
 <div class="container mt-5">
     <h2 th:text="${update == null} ? 'Add a Book' : 'Update a Book'" class="text-center mb-4"></h2>
-    <form action="#" th:action="@{/update-book}" th:object="${book}" method="post">
-        <input type="text"   th:value="${book.title}"
+    <div class="row m-2">
+        <div class="align-items-center">
+            <div  class="col-2 text-left">
+                <a th:href="@{/books/{isbn}(isbn=${book.ISBN})}" class="btn btn-info  ">Back</a>
+                <a th:href="@{/books}" class="btn btn-info">All Books</a>
+            </div>
+        </div>
+    </div>
+    <br>
+    <form  th:action="@{/update-book/{isbn}(isbn=${book.ISBN})}" th:object="${book}" method="post">
+        <input type="text"    th:field="*{title}"
                class="form-control mb-4 col-2" >
-        <input type="text"   th:value="${book.ISBN}"
+        <input type="text"    th:field="*{ISBN}"
                class="form-control mb-4 col-2">
-        <input type="text"   th:value="${book.author}"
+        <input type="text"    th:field="*{author}"
                class="form-control mb-4 col-2">
-        <input type="text"   th:value="${book.genre}"
+        <input type="text"    th:field="*{genre}"
                class="form-control mb-4 col-2">
-        <input type="text"   th:value="${book.publisher}"
+        <input type="text"    th:field="*{publisher}"
                 class="form-control mb-4 col-2">
-        <input type="text"   th:value="${book.year}"
+        <input type="text"    th:field="*{year}"
                 class="form-control mb-4 col-2">
-        <input type="text"   th:value="${book.availableCopies}"
+        <input type="text"    th:field="*{availableCopies}"
                 class="form-control mb-4 col-2">
         <button type="submit" class="btn btn-info col-2"
                 th:text="${update==null} ? Save : Update">

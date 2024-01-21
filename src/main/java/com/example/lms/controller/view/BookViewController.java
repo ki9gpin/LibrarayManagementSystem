@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +21,7 @@ import java.util.Optional;
 public class BookViewController {
 
     final BookService bookService;
-    private final Logger LOGGER = LoggerFactory.getLogger(BookController.class);
+    public Logger LOGGER = LoggerFactory.getLogger(BookController.class);
 
     public BookViewController(BookService bookService) {
         this.bookService = bookService;
@@ -61,28 +63,32 @@ public class BookViewController {
         return "redirect:/books";
     }
     @GetMapping("/update-book/{isbn}")
-    public String getUpdateBookView( Model model, @PathVariable String isbn) throws BookNotFoundException {
+    public ModelAndView getUpdateBookView(Model model, @PathVariable String isbn) throws BookNotFoundException {
         Optional<Book> book = bookService.getBookByISBN(isbn);
         if(book.isPresent()){
-            model.addAttribute("book",book.get());
-            model.addAttribute("update",true);
-            return "update-book";
+            ModelAndView  updateView = new ModelAndView("update-book");
+            updateView.addObject("book",book.get());
+            updateView.addObject("update",true);
+            return updateView;
         } else{
             throw  new BookNotFoundException("Couldn't find the book");
         }
 
     }
 
-    @PutMapping("/update-book/{isbn}")
+    @PostMapping("/update-book/{isbn}")
     public String updateBookEntry(@ModelAttribute("book") Book book, @PathVariable String isbn ) throws BookNotFoundException {
+        System.out.println(book.getAvailableCopies());
+        LOGGER.debug("available copies "+book.getAvailableCopies());
+        book.setYear(book.getYear());
         bookService.updateBookEntry(isbn,book);
         return "redirect:/books/"+book.getISBN();
     }
 
-    @DeleteMapping("/delete-book/{isbn}")
+    @GetMapping("/delete-book/{isbn}")
     public String deleteBookEntry(@PathVariable String isbn ) {
         bookService.deleteBookEntry(isbn);
-        return "redirect:/books/";
+        return "redirect:/books";
     }
 
 }

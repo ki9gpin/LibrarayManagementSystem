@@ -10,8 +10,14 @@
 
 <body>
 <div class="container mt-5">
-    <h2 class=" mb-4">Book Details</h2>
-
+<!--    <h2 th:text="Book Details" class="text-center mb-4"></h2>-->
+    <div class="row m-2">
+        <div class="col-2 text-left">
+            <a th:href="@{/books}" class="btn btn-info">All Books</a>
+        </div>
+    </div>
+    <br>
+    <br>
     <!-- Display basic player information in a Bootstrap card -->
     <div class="card mb-4 mr-8">
         <div class="card-body">
@@ -41,14 +47,9 @@
 
     <!-- Buttons with Bootstrap classes to navigate to matches and stats pages -->
     <div class="row">
-        <div class="col-1 text-end">
+        <div class="col-3 text-left">
             <a th:href="@{/update-book/{isbn}(isbn=${book.ISBN})}" class="btn btn-info me-3">Edit</a>
-        </div>
-        <div class="col-1 text-end">
-            <form th:action="@{/delete-book/{isbn}(isbn=${book.ISBN})}" th:method="delete">
-                <input type="hidden" name="isbn" th:value="${book.ISBN}" />
-                <button type="submit" class="btn btn-danger me-3">Delete</button>
-            </form>
+            <a th:href="@{/delete-book/{isbn}(isbn=${book.ISBN})}" class="btn btn-info me-3">Delete</a>
         </div>
     </div>
 </div>

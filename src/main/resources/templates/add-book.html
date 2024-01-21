@@ -10,6 +10,13 @@
 <body>
 <div class="container mt-5">
     <h2 th:text="${update == null} ? 'Add a Book' : 'Update a Book'" class="text-center mb-4"></h2>
+    <div class="row m-2">
+        <div class="col-2 text-left">
+            <a th:href="@{/books}" class="btn btn-info">All Books</a>
+        </div>
+    </div>
+    <br>
+    <br>
     <form action="#" th:action="@{/add-book}" th:object="${book}" method="post">
         <input type="text"  th:field="*{title}"
                 placeholder="Title" class="form-control mb-4 col-2" >

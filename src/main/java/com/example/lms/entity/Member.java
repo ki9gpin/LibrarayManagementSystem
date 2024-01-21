@@ -18,7 +18,8 @@ public class Member {
     public Member() {
     }
 
-    public Member(String firstName, String lastName, String email, long booksCheckedOut) {
+    public Member(long id, String firstName, String lastName, String email, long booksCheckedOut) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -55,5 +56,13 @@ public class Member {
 
     public void setBooksCheckedOut(long booksCheckedOut) {
         this.booksCheckedOut = booksCheckedOut;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = this.id;
     }
 }
