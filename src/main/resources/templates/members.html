@@ -15,13 +15,24 @@
             <h1>Available Books</h1>
             <br>
             <br>
-
         </div>
-        <div class="col-20 text-center">
-            <a th:href="@{/}" class="btn btn-info">Home</a>
-            <br>
-            <br>
-            <a th:href="@{/add-member}" class="btn btn-info">Add a new Member</a>
+
+        <div class="row m-2">
+            <div  class="col-2 text-left">
+                <a th:href="@{/}" class="btn btn-info">Home</a>
+            </div>
+            <div class="col-2 text-left">
+                <a th:href="@{/books}" class="btn btn-info">All Books</a>
+            </div>
+            <div class="col-2 text-left">
+                <a th:href="@{/members}" class="btn btn-info">All Members</a>
+            </div>
+            <div class="col-2 text-left">
+                <a th:href="@{/transactions}" class="btn btn-info">All Transactions</a>
+            </div>
+            <div class="col-2 text-left">
+                <a th:href="@{/add-member}" class="btn btn-info">Add a new Member</a>
+            </div>
         </div>
 
     </div>

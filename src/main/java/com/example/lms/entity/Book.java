@@ -29,7 +29,6 @@ public class Book {
     }
 
     public Book(String ISBN, String title, String author, String genre, String publisher, Date year, long availableCopies) {
-        System.out.println("isbn length "+ISBN.length());
         this.ISBN = ISBN;
         this.title = title;
         this.author = author;

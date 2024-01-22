@@ -1,6 +1,7 @@
 package com.example.lms.controller.view;
 
 import com.example.lms.entity.Member;
+import com.example.lms.entity.Transaction;
 import com.example.lms.error.MemberNotFoundException;
 import com.example.lms.service.MemberService;
 import org.springframework.stereotype.Controller;
@@ -36,6 +37,13 @@ public class MemberViewController {
         }else {
             throw new MemberNotFoundException("Member not found.");
         }
+        return "member";
+    }
+
+    @GetMapping("/members/{ID}/transactions")
+    public String getTransactionsByMemberID(Model model, @PathVariable long ID)  {
+        List<Transaction> transactions = memberService.getTransactionsByMemberId(ID);
+        model.addAttribute("transactions",transactions);
         return "member";
     }
 

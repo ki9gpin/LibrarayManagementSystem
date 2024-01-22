@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${member.firstName + ' '+ member.lastName}"></title>
+    <title th:text="Transaction"></title>
     <!--    <link rel="stylesheet" href="../static/bootstrap.min.css">-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -29,19 +29,17 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
-                    <p class="mb-2">First Name</p>
-                    <p class="mb-2">Last Name</p>
-                    <p class="mb-2">Email</p>
-                    <p class="mb-2">BooksCheckedOut</p>
-                    <p class="mb-2"> Transactions </p>
+                    <p class="mb-2">Member Name</p>
+                    <p class="mb-2">Book</p>
+                    <p class="mb-2">Check Out Date</p>
+                    <p class="mb-2">Return Date</p>
                 </div>
 
                 <div class="col-md-4">
-                    <strong><p class="mb-2" th:text="${member.firstName}"></p></strong>
-                    <strong><p class="mb-2" th:text="${member.lastName}"></p></strong>
-                    <strong><p class="mb-2" th:text="${member.email}"></p></strong>
-                    <strong><p class="mb-2" th:text="${member.booksCheckedOut}"></p></strong>
-                    <a th:text="Transactions" th:href="@{/transactions/user/{id}(id=${member.id})}"></a>
+                    <strong><p class="mb-2" th:text="${member.firstName} +' '+${member.lastName}"></p></strong>
+                    <strong><p class="mb-2" th:text="${book.title}"></p></strong>
+                    <strong><p class="mb-2" th:text="${transaction.checkedOutDate}"></p></strong>
+                    <strong><p class="mb-2" th:text="${transaction.returnDate}"></p></strong>
                 </div>
             </div>
         </div>
@@ -50,8 +48,7 @@
     <!-- Buttons with Bootstrap classes to navigate to matches and stats pages -->
     <div class="row">
         <div class="col-3 text-left">
-            <a th:href="@{/update-member/{id}(id=${member.id})}" class="btn btn-info me-3">Edit</a>
-            <a th:href="@{/delete-member/{id}(id=${member.id})}" class="btn btn-info me-3">Delete</a>
+            <a th:href="@{/return}" class="btn btn-info me-3">Return</a>
         </div>
     </div>
 </div>

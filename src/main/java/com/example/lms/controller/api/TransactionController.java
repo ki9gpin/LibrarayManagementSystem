@@ -1,22 +1,28 @@
 package com.example.lms.controller.api;
 
 import com.example.lms.dto.TransactionDTO;
+import com.example.lms.entity.Book;
+import com.example.lms.entity.Member;
 import com.example.lms.entity.Transaction;
+import com.example.lms.service.BookService;
+import com.example.lms.service.MemberService;
 import com.example.lms.service.TransactionService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/transactions")
 public class TransactionController {
 
     final TransactionService transactionService;
+    final MemberService memberService;
+    final BookService bookService;
 
-    public TransactionController(TransactionService transactionService, Transaction transaction) {
+    public TransactionController(TransactionService transactionService, Transaction transaction, MemberService memberService, BookService bookService) {
         this.transactionService = transactionService;
+        this.memberService = memberService;
+        this.bookService = bookService;
     }
 
     @GetMapping("")
@@ -25,7 +31,7 @@ public class TransactionController {
 
     }
     @GetMapping("/user/{userId}")
-    public Optional<Transaction> getTransactionByUserId(@PathVariable long userId){
+    public List<Transaction> getTransactionByUserId(@PathVariable long userId){
         return transactionService.getTransactionByUserId(userId);
     }
 
@@ -37,7 +43,9 @@ public class TransactionController {
     @PostMapping("/check-out")
     public Transaction checkOutBook(@RequestBody TransactionDTO transactionDTO){
         System.out.println("isbn = "+transactionDTO.getBookISBN() +" userId = "+transactionDTO.getUserId());
-        return transactionService.checkOut(transactionDTO);
+        Member member= memberService.getMemberById(transactionDTO.getUserId()).get();
+        Book book = bookService.getBookByISBN(transactionDTO.getBookISBN()).get();
+        return transactionService.checkOut(transactionDTO, member, book);
     }
 
     @PutMapping("/return")

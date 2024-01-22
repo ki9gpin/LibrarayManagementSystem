@@ -2,9 +2,10 @@ package com.example.lms.service;
 
 
 import com.example.lms.entity.Member;
+import com.example.lms.entity.Transaction;
 import com.example.lms.error.MemberNotFoundException;
 import com.example.lms.repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.lms.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +14,11 @@ import java.util.Optional;
 @Service
 public class MemberService {
     final MemberRepository memberRepository;
+    final TransactionRepository transactionRepository;
 
-    public MemberService(MemberRepository memberRepository) {
+    public MemberService(MemberRepository memberRepository, TransactionRepository transactionRepository) {
         this.memberRepository = memberRepository;
+        this.transactionRepository = transactionRepository;
     }
 
 
@@ -50,4 +53,7 @@ public class MemberService {
         memberRepository.deleteById(id);
     }
 
+    public List<Transaction> getTransactionsByMemberId(long id) {
+        return transactionRepository.findTransactionByUserId(id);
+    }
 }

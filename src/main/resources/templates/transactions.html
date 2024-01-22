@@ -12,16 +12,9 @@
 
     <div class="row m-4">
         <div class="col-9">
-            <h1>Available Books</h1>
+            <h1>Transactions</h1>
             <br>
             <br>
-
-        </div>
-        <div class="col-20 text-center">
-            <a th:href="@{/}" class="btn btn-info">Home</a>
-            <br>
-            <br>
-
         </div>
         <div class="row m-2">
             <div  class="col-2 text-left">
@@ -36,40 +29,34 @@
             <div class="col-2 text-left">
                 <a th:href="@{/transactions}" class="btn btn-info">All Transactions</a>
             </div>
-            <div class="col-2 text-left">
-                <a th:href="@{/add-book}" class="btn btn-info">Add a new Book</a>
-            </div>
         </div>
     </div>
+
 
 
     <table  class="table p-4">
         <thead>
             <tr >
-                <td > Title </td>
-                <td > ISBN </td>
-                <td > Author </td>
-                <td > Genre </td>
-                <td > Publisher</td>
-                <td > Year </td>
-                <td > Available Copies</td>
-                <td > Transactions</td>
+                <td > Transaction ID </td>
+                <td > Member </td>
+                <td > Book </td>
+                <td > Check Out Date </td>
+                <td > Return date</td>
             </tr>
         </thead>
         <tbody>
-            <tr th:each ="book : ${books}">
+            <tr th:each ="transaction : ${transactions}">
                 <td>
-                    <a th:text="${book.title}" th:href="@{/books/{isbn}(isbn=${book.ISBN})}"></a>
+                    <a th:text="${transaction.id}" th:href="@{/transactions/{id}(id=${transaction.id})}"></a>
                 </td>
-                <td th:text="${book.ISBN}"></td>
-                <td th:text="${book.author}"></td>
-                <td th:text="${book.genre}"></td>
-                <td th:text="${book.publisher}"></td>
-                <td th:text="${book.year}"></td>
-                <td th:text="${book.availableCopies}"></td>
                 <td>
-                    <a th:text="Transactions" th:href="@{/transactions/book/{id}(id=${book.ISBN})}"></a>
+                    <a th:text="${transaction.member?.firstName}" th:href="@{/members/{id}(id=${transaction.userId})}"></a>
                 </td>
+                <td>
+                    <a th:text="${transaction.book?.title}" th:href="@{/books/{id}(id=${transaction.bookISBN})}"></a>
+                </td>
+                <td th:text="${transaction.checkedOutDate}"></td>
+                <td th:text="${transaction.returnDate}"></td>
             </tr>
         </tbody>
     </table>

@@ -15,6 +15,12 @@
         <div class="col-2 text-left">
             <a th:href="@{/books}" class="btn btn-info">All Books</a>
         </div>
+        <div class="col-2 text-left">
+            <a th:href="@{/members}" class="btn btn-info">All Members</a>
+        </div>
+        <div class="col-2 text-left">
+            <a th:href="@{/transactions}" class="btn btn-info">All Transactions</a>
+        </div>
     </div>
     <br>
     <br>
@@ -30,6 +36,7 @@
                     <p class="mb-2">Publisher</p>
                     <p class="mb-2">Year</p>
                     <p class="mb-2">Available Copies</p>
+                    <p class="mb-2"> Transactions </p>
                 </div>
 
                 <div class="col-md-4">
@@ -40,6 +47,7 @@
                     <strong><p class="mb-2" th:text="${book.publisher}"></p></strong>
                     <strong><p class="mb-2" th:text="${book.year}"></p></strong>
                     <strong><p class="mb-2" th:text="${book.availableCopies}"></p></strong>
+                    <a th:text="Transactions" th:href="@{/transactions/book/{id}(id=${book.ISBN})}"></a>
                 </div>
             </div>
         </div>
@@ -48,6 +56,7 @@
     <!-- Buttons with Bootstrap classes to navigate to matches and stats pages -->
     <div class="row">
         <div class="col-3 text-left">
+            <a th:href="@{/check-out/{isbn}(isbn=${book.ISBN})}"   class="btn btn-info me-3">Check Out</a>
             <a th:href="@{/update-book/{isbn}(isbn=${book.ISBN})}" class="btn btn-info me-3">Edit</a>
             <a th:href="@{/delete-book/{isbn}(isbn=${book.ISBN})}" class="btn btn-info me-3">Delete</a>
         </div>
