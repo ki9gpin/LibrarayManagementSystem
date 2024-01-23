@@ -12,6 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -73,25 +76,20 @@ public class TransactionViewController {
         System.out.println(transactionDTO.getBookISBN());
         Book book = bookService.getBookByISBN(transactionDTO.getBookISBN()).get();
         var transaction =  transactionService.checkOut(transactionDTO,member,book);
+        bookService.decreaseAvailableCount(book);
+        memberService.increaseCheckOutCount(member);
         model.addAttribute("transaction",transaction);
         return "redirect:/transactions/user/"+transactionDTO.getUserId();
     }
 
-//    @GetMapping("/return/{transactionId}")
-//    public ModelAndView getReturnTransactionView(@PathVariable long transactionId, Model model){
-//        Transaction transaction = transactionService.getTransactionById(transactionId).get();
-//        ModelAndView modelAndView = new ModelAndView("return");
-//        modelAndView.addObject("return", true);
-//        modelAndView.addObject("transaction",transaction);
-//        return modelAndView;
-//    }
-
     @PostMapping("/return")
-    public String returnBook(@RequestBody TransactionDTO transactionDTO, Model model){
-        Member member= memberService.getMemberById(transactionDTO.getUserId()).get();
-        Book book = bookService.getBookByISBN(transactionDTO.getBookISBN()).get();
-        var transaction =  transactionService.checkOut(transactionDTO, member, book);
+    public String returnBook(@ModelAttribute("transaction") Transaction transaction, Model model){
+        Member member= memberService.getMemberById(transaction.getUserId()).get();
+        Book book = bookService.getBookByISBN(transaction.getBookISBN()).get();
+        transactionService.returnBookView(transaction);
+        bookService.increaseAvailableCount(book);
+        memberService.decreaseCheckOutCount(member);
         model.addAttribute("transaction",transaction);
-        return "redirect:/transactions/user/"+transactionDTO.getUserId();
+        return "redirect:/transactions/user/"+transaction.getUserId();
     }
 }

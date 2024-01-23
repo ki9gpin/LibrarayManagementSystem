@@ -48,7 +48,16 @@
     <!-- Buttons with Bootstrap classes to navigate to matches and stats pages -->
     <div class="row">
         <div class="col-3 text-left">
-            <a th:href="@{/return}" class="btn btn-info me-3">Return</a>
+            <form action="/return" th:object="${transaction}" method="post">
+                <input type="hidden" th:field="*{id}" />
+                <input type="hidden" th:field="*{userId}" />
+                <input type="hidden" th:field="*{bookISBN}" />
+                <input type="hidden" th:field="*{checkedOutDate}" />
+                <input type="hidden" th:field="*{returnDate}" />
+                <input type="hidden" th:field="*{member}" />
+                <input type="hidden" th:field="*{book}" />
+                <button type="submit" class="btn btn-info me-3">Return</button>
+            </form>
         </div>
     </div>
 </div>

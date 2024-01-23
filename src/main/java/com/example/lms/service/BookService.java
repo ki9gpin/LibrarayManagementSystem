@@ -69,4 +69,16 @@ public class BookService {
     public void deleteBookEntry(String isbn) {
         bookRepository.deleteByISBN(isbn);  // ? HttpStatus.OK: HttpStatus.NOT_FOUND;
     }
+
+    @Transactional
+    public void decreaseAvailableCount(Book book) {
+        book.setAvailableCopies(book.getAvailableCopies()-1);
+        bookRepository.save(book);
+    }
+
+    @Transactional
+    public void increaseAvailableCount(Book book) {
+        book.setAvailableCopies(book.getAvailableCopies()+1);
+        bookRepository.save(book);
+    }
 }

@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="container mt-5">
-    <h2 th:text="${return == null} ? 'Check Out' : 'Return'" class="text-center mb-4"></h2>
+    <h2 class="text-center mb-4">Check Out</h2>
     <div class="row m-2">
         <div class="col-2 text-left">
             <a th:href="@{/transactions}" class="btn btn-info">All Transactions</a>
@@ -30,7 +30,7 @@
         <input type="date"  th:field="*{checkedOutDate}"
                placeholder="Check Out Date" class="form-control mb-4 col-2">
         <button type="submit" class="btn btn-info col-2"
-                th:text="${return == null} ? Check Out : Return">
+                th:text="CheckOut">
         </button>
     </form>
 </div>

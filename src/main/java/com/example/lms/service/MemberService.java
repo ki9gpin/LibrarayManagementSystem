@@ -6,6 +6,7 @@ import com.example.lms.entity.Transaction;
 import com.example.lms.error.MemberNotFoundException;
 import com.example.lms.repository.MemberRepository;
 import com.example.lms.repository.TransactionRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,5 +56,16 @@ public class MemberService {
 
     public List<Transaction> getTransactionsByMemberId(long id) {
         return transactionRepository.findTransactionByUserId(id);
+    }
+
+    @Transactional
+    public void increaseCheckOutCount(Member member) {
+        member.setBooksCheckedOut(member.getBooksCheckedOut()+1);
+        memberRepository.save(member);
+    }
+
+    public void decreaseCheckOutCount(Member member) {
+        member.setBooksCheckedOut(member.getBooksCheckedOut()-1);
+        memberRepository.save(member);
     }
 }

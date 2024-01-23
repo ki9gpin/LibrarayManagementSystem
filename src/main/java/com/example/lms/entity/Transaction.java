@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,8 +16,8 @@ public class Transaction {
     private long id;
     private long userId;
     private String bookISBN;
-    private LocalDateTime checkedOutDate;
-    private LocalDateTime returnDate;
+    private LocalDate checkedOutDate;
+    private LocalDate returnDate;
     @ManyToOne
     @JoinColumn
     private Member member;
@@ -28,7 +29,7 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(long userId, String bookISBN, LocalDateTime checkedOutDate, LocalDateTime returnDate, Member member, Book book) {
+    public Transaction(long userId, String bookISBN, LocalDate checkedOutDate, LocalDate returnDate, Member member, Book book) {
         this.userId = userId;
         this.bookISBN = bookISBN;
         this.checkedOutDate = checkedOutDate;
@@ -60,19 +61,19 @@ public class Transaction {
         this.bookISBN = bookISBN;
     }
 
-    public LocalDateTime getCheckedOutDate() {
+    public LocalDate getCheckedOutDate() {
         return checkedOutDate;
     }
 
-    public void setCheckedOutDate(LocalDateTime checkedOutDate) {
+    public void setCheckedOutDate(LocalDate checkedOutDate) {
         this.checkedOutDate = checkedOutDate;
     }
 
-    public LocalDateTime getReturnDate() {
+    public LocalDate getReturnDate() {
         return returnDate;
     }
 
-    public void setReturnDate(LocalDateTime returnDate) {
+    public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
     }
 

@@ -7,6 +7,7 @@ import com.example.lms.entity.Transaction;
 import com.example.lms.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +37,7 @@ public class TransactionService {
             Transaction transaction = new Transaction();
             transaction.setBookISBN(transactionDTO.getBookISBN());
             transaction.setUserId(transactionDTO.getUserId());
-            transaction.setCheckedOutDate(LocalDateTime.now());
+            transaction.setCheckedOutDate(LocalDate.now());
             transaction.setReturnDate(null);
             transaction.setMember(member);
             transaction.setBook(book);
@@ -45,7 +46,7 @@ public class TransactionService {
 
     public Transaction returnBook(TransactionDTO transactionDTO) {
         Transaction transaction =  transactionRepository.findTransactionByBookISBNAndUserId(transactionDTO.getBookISBN(), transactionDTO.getUserId());
-        transaction.setReturnDate(LocalDateTime.now());
+        transaction.setReturnDate(LocalDateTime.now().toLocalDate());
         return transactionRepository.save(transaction);
     }
 
@@ -59,5 +60,10 @@ public class TransactionService {
 
     public Book getBookById(long id) {
         return transactionRepository.findBookById(id);
+    }
+
+    public Transaction returnBookView(Transaction transaction) {
+        transaction.setReturnDate(LocalDate.now());
+        return transactionRepository.save(transaction);
     }
 }
