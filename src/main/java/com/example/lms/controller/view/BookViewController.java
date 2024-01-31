@@ -12,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,7 +81,7 @@ public class BookViewController {
         LOGGER.debug("available copies "+book.getAvailableCopies());
         book.setYear(book.getYear());
         bookService.updateBookEntry(isbn,book);
-        return "redirect:/books/"+book.getISBN();
+        return "redirect:/books/"+book.getIsbn();
     }
 
     @GetMapping("/delete-book/{isbn}")

@@ -4,7 +4,6 @@ import com.example.lms.entity.Book;
 import com.example.lms.error.BookNotFoundException;
 import com.example.lms.repository.BookRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,7 @@ public class BookService {
     }
 
     public Optional<Book> getBookByISBN(String isbn) {
-        return bookRepository.findBookByISBN(isbn);
+        return bookRepository.findBookByIsbn(isbn);
     }
 
     public Book createBookEntry(Book book) {
@@ -32,7 +31,7 @@ public class BookService {
     }
 
     public Book updateBookEntry(String isbn, Book book) throws BookNotFoundException {
-        Optional<Book> optBook = bookRepository.findBookByISBN(isbn);
+        Optional<Book> optBook = bookRepository.findBookByIsbn(isbn);
         System.out.println("inside update book entry");
         if(optBook.isPresent()){
             System.out.println("Updating book. Book is available.");
@@ -50,7 +49,7 @@ public class BookService {
     }
 
     public HttpStatus updateBookAvailableCopiesCount(String isbn, long count) throws Exception {
-        Optional<Book> optbook = bookRepository.findBookByISBN(isbn);
+        Optional<Book> optbook = bookRepository.findBookByIsbn(isbn);
         if(optbook.isPresent() ){
             Book storedBook = optbook.get();
             if(count>=0){
@@ -67,7 +66,7 @@ public class BookService {
 
     @Transactional
     public void deleteBookEntry(String isbn) {
-        bookRepository.deleteByISBN(isbn);  // ? HttpStatus.OK: HttpStatus.NOT_FOUND;
+        bookRepository.deleteByIsbn(isbn);  // ? HttpStatus.OK: HttpStatus.NOT_FOUND;
     }
 
     @Transactional
@@ -80,5 +79,9 @@ public class BookService {
     public void increaseAvailableCount(Book book) {
         book.setAvailableCopies(book.getAvailableCopies()+1);
         bookRepository.save(book);
+    }
+
+    public List<Book> getBooksByISBN(List<String> booksISBN) {
+        return bookRepository.findAllByIsbnIn(booksISBN);
     }
 }

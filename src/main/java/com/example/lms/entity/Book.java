@@ -14,7 +14,7 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "custom_isbn_generator")
     private long id;
-    private String ISBN;
+    private String isbn;
     private String title;
     private String author;
     private String genre;
@@ -28,8 +28,8 @@ public class Book {
     public Book() {
     }
 
-    public Book(String ISBN, String title, String author, String genre, String publisher, Date year, long availableCopies) {
-        this.ISBN = ISBN;
+    public Book(String isbn, String title, String author, String genre, String publisher, Date year, long availableCopies) {
+        this.isbn = isbn;
         this.title = title;
         this.author = author;
         this.genre = genre;
@@ -38,12 +38,12 @@ public class Book {
         this.availableCopies = availableCopies;
     }
 
-    public String getISBN() {
-        return ISBN;
+    public String getIsbn() {
+        return isbn;
     }
 
-    public void setISBN(String ISBN) {
-        this.ISBN = ISBN;
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
     public String getTitle() {

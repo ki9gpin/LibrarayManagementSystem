@@ -4,6 +4,7 @@ import com.example.lms.dto.TransactionDTO;
 import com.example.lms.entity.Book;
 import com.example.lms.entity.Member;
 import com.example.lms.entity.Transaction;
+import com.example.lms.entity.TransactionMultiple;
 import com.example.lms.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 
@@ -66,4 +67,5 @@ public class TransactionService {
         transaction.setReturnDate(LocalDate.now());
         return transactionRepository.save(transaction);
     }
+
 }

@@ -10,7 +10,6 @@ public class TransactionDTO {
 
     public TransactionDTO(long userId, String bookISBN) {
         this.userId = userId;
-        System.out.println("in transaction dto constructor bookISBN = "+ bookISBN);
         this.bookISBN = bookISBN;
     }
 

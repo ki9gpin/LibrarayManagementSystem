@@ -4,17 +4,16 @@ import com.example.lms.dto.TransactionDTO;
 import com.example.lms.entity.Book;
 import com.example.lms.entity.Member;
 import com.example.lms.entity.Transaction;
+import com.example.lms.entity.TransactionMultiple;
 import com.example.lms.service.BookService;
 import com.example.lms.service.MemberService;
 import com.example.lms.service.TransactionService;
+import com.example.lms.service.TransactionServiceMultiple;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -23,11 +22,13 @@ public class TransactionViewController {
     final TransactionService transactionService;
     final MemberService memberService;
     final BookService bookService;
+    final TransactionServiceMultiple transactionServiceMultiple;
 
-    public TransactionViewController(TransactionService transactionService, MemberService memberService, BookService bookService) {
+    public TransactionViewController(TransactionService transactionService, MemberService memberService, BookService bookService, TransactionServiceMultiple transactionServiceMultiple) {
         this.transactionService = transactionService;
         this.memberService = memberService;
         this.bookService = bookService;
+        this.transactionServiceMultiple = transactionServiceMultiple;
     }
 
     @GetMapping("/transactions")
@@ -60,8 +61,33 @@ public class TransactionViewController {
         model.addAttribute("transactions",transactions);
         return "transactions";
     }
+
+    @GetMapping("/check-out-multiple")
+    public String checkOutBookView( Model model){
+        List<Member> members = memberService.getAllMembers();
+        List<Book> books = bookService.getAllBooks();
+        model.addAttribute("transactionMultiple", new TransactionMultiple());
+        model.addAttribute("members", members);
+        model.addAttribute("books",books);
+        return "check-out-multiple";
+    }
+
+    @PostMapping("/check-out-multiple")
+    public String checkOutMultipleBook( TransactionMultiple transactionMultiple, Model model){
+        Member member= memberService.getMemberById(transactionMultiple.getUserId()).get();
+        List<String> booksISBN = transactionMultiple.getBooksISBN();
+        List<Book> books = bookService.getBooksByISBN(booksISBN);
+        var transaction =  transactionServiceMultiple.checkOut(transactionMultiple,member,books);
+        for(Book book : books){
+            bookService.decreaseAvailableCount(book);
+        }
+        memberService.increaseCheckOutCount(member);
+        model.addAttribute("transaction",transaction);
+        return "redirect:/transactions/user/"+transaction.getUserId();
+    }
+
     @GetMapping("/check-out/{isbn}")
-    public String checkOutBookView(@PathVariable String isbn, Model model){
+    public String checkOutBookByISBNView(@PathVariable String isbn, Model model){
         List<Member> members = memberService.getAllMembers();
         Book book = bookService.getBookByISBN(isbn).get();
         model.addAttribute("transaction", new Transaction());

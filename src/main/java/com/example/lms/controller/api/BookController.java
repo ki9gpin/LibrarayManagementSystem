@@ -5,7 +5,6 @@ import com.example.lms.error.BookNotFoundException;
 import com.example.lms.service.BookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +34,7 @@ public class BookController {
     }
     @PostMapping("")
     public Book createBookEntry(@ModelAttribute Book book){
-        System.out.println("inside create book entry ; title = "+book.getISBN());
+        System.out.println("inside create book entry ; title = "+book.getIsbn());
         return bookService.createBookEntry(book);
     }
 
