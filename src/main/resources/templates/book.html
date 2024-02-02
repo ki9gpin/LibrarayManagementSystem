@@ -42,12 +42,12 @@
                 <div class="col-md-4">
                     <h5 class="card-title text-primary" th:text="${book.title}"></h5>
                     <strong><p class="mb-2" th:text="${book.author}"></p></strong>
-                    <strong><p class="mb-2" th:text="${book.ISBN}"></p></strong>
+                    <strong><p class="mb-2" th:text="${book.isbn}"></p></strong>
                     <strong><p class="mb-2" th:text="${book.genre}"></p></strong>
                     <strong><p class="mb-2" th:text="${book.publisher}"></p></strong>
                     <strong><p class="mb-2" th:text="${book.year}"></p></strong>
                     <strong><p class="mb-2" th:text="${book.availableCopies}"></p></strong>
-                    <a th:text="Transactions" th:href="@{/transactions/book/{id}(id=${book.ISBN})}"></a>
+                    <a th:text="Transactions" th:href="@{/transactions/book/{id}(id=${book.isbn})}"></a>
                 </div>
             </div>
         </div>
@@ -56,9 +56,9 @@
     <!-- Buttons with Bootstrap classes to navigate to matches and stats pages -->
     <div class="row">
         <div class="col-3 text-left">
-            <a th:href="@{/check-out/{isbn}(isbn=${book.ISBN})}"   class="btn btn-info me-3">Check Out</a>
-            <a th:href="@{/update-book/{isbn}(isbn=${book.ISBN})}" class="btn btn-info me-3">Edit</a>
-            <a th:href="@{/delete-book/{isbn}(isbn=${book.ISBN})}" class="btn btn-info me-3">Delete</a>
+            <a th:href="@{/check-out/{isbn}(isbn=${book.isbn})}"   class="btn btn-info me-3">Check Out</a>
+            <a th:href="@{/update-book/{isbn}(isbn=${book.isbn})}" class="btn btn-info me-3">Edit</a>
+<!--            <a th:href="@{/delete-book/{isbn}(isbn=${book.isbn})}" class="btn btn-info me-3">Delete</a>-->
         </div>
     </div>
 </div>

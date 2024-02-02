@@ -84,10 +84,10 @@ public class BookViewController {
         return "redirect:/books/"+book.getIsbn();
     }
 
-    @GetMapping("/delete-book/{isbn}")
-    public String deleteBookEntry(@PathVariable String isbn ) {
-        bookService.deleteBookEntry(isbn);
-        return "redirect:/books";
-    }
+//    @GetMapping("/delete-book/{isbn}")
+//    public String deleteBookEntry(@PathVariable String isbn ) {
+//        bookService.deleteBookEntry(isbn);
+//        return "redirect:/books";
+//    }
 
 }

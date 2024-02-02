@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.List;
 
+
 @Entity
 @Component
 public class TransactionMultiple {
@@ -13,15 +14,15 @@ public class TransactionMultiple {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
     private long userId;
-    private List<String> booksISBN;
+    private List<String> booksIsbn;
     private LocalDate checkedOutDate;
     private LocalDate returnDate;
     @ManyToOne
     @JoinColumn
     private Member member;
 
-    @ManyToMany
-    private List<Book> books;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<BookWithDate> booksWithDate;
 
     public long getId() {
         return id;
@@ -63,19 +64,19 @@ public class TransactionMultiple {
         this.member = member;
     }
 
-    public List<Book> getBooks() {
-        return books;
+    public List<BookWithDate> getBooksWithDate() {
+        return booksWithDate;
     }
 
-    public void setBooks(List<Book> books) {
-        this.books = books;
+    public void setBooksWithDate(List<BookWithDate> books) {
+        this.booksWithDate = books;
     }
 
-    public List<String> getBooksISBN() {
-        return booksISBN;
+    public List<String> getBooksIsbn() {
+        return booksIsbn;
     }
 
-    public void setBooksISBN(List<String> booksISBN) {
-        this.booksISBN = booksISBN;
+    public void setBooksIsbn(List<String> booksIsbn) {
+        this.booksIsbn = booksIsbn;
     }
 }

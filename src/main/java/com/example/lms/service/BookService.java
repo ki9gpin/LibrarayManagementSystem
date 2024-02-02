@@ -1,6 +1,7 @@
 package com.example.lms.service;
 
 import com.example.lms.entity.Book;
+import com.example.lms.entity.BookWithDate;
 import com.example.lms.error.BookNotFoundException;
 import com.example.lms.repository.BookRepository;
 import jakarta.transaction.Transactional;
@@ -83,5 +84,11 @@ public class BookService {
 
     public List<Book> getBooksByISBN(List<String> booksISBN) {
         return bookRepository.findAllByIsbnIn(booksISBN);
+    }
+
+    public void increaseAvailableCount(String isbn) {
+        Book book = bookRepository.findBookByIsbn(isbn).get();
+        book.setAvailableCopies(book.getAvailableCopies()+1);
+        bookRepository.save(book);
     }
 }

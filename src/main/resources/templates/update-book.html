@@ -13,16 +13,16 @@
     <div class="row m-2">
         <div class="align-items-center">
             <div  class="col-2 text-left">
-                <a th:href="@{/books/{isbn}(isbn=${book.ISBN})}" class="btn btn-info  ">Back</a>
+                <a th:href="@{/books/{isbn}(isbn=${book.isbn})}" class="btn btn-info  ">Back</a>
                 <a th:href="@{/books}" class="btn btn-info">All Books</a>
             </div>
         </div>
     </div>
     <br>
-    <form  th:action="@{/update-book/{isbn}(isbn=${book.ISBN})}" th:object="${book}" method="post">
+    <form  th:action="@{/update-book/{isbn}(isbn=${book.isbn})}" th:object="${book}" method="post">
         <input type="text"    th:field="*{title}"
                class="form-control mb-4 col-2" >
-        <input type="text"    th:field="*{ISBN}"
+        <input type="text"    th:field="*{isbn}"
                class="form-control mb-4 col-2">
         <input type="text"    th:field="*{author}"
                class="form-control mb-4 col-2">

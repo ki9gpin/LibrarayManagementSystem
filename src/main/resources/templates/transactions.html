@@ -41,11 +41,11 @@
                 <td > Member </td>
                 <td > Book </td>
                 <td > Check Out Date </td>
-                <td > Return date</td>
+
             </tr>
         </thead>
         <tbody>
-            <tr th:each ="transaction : ${transactions}">
+            <tr th:each ="transaction : ${transactionsMultiple}">
                 <td>
                     <a th:text="${transaction.id}" th:href="@{/transactions/{id}(id=${transaction.id})}"></a>
                 </td>
@@ -53,10 +53,14 @@
                     <a th:text="${transaction.member?.firstName}" th:href="@{/members/{id}(id=${transaction.userId})}"></a>
                 </td>
                 <td>
-                    <a th:text="${transaction.book?.title}" th:href="@{/books/{id}(id=${transaction.bookISBN})}"></a>
+                    <ul th:each="bookWithDate : ${transaction.booksWithDate}">
+                        <li >
+                            <a th:text="${bookWithDate.book.title}" th:href="@{/books/{id}(id=${bookWithDate.book.isbn})}"></a>
+                        </li>
+                    </ul>
                 </td>
                 <td th:text="${transaction.checkedOutDate}"></td>
-                <td th:text="${transaction.returnDate}"></td>
+<!--                <td th:text="${transaction.returnDate}"></td>-->
             </tr>
         </tbody>
     </table>

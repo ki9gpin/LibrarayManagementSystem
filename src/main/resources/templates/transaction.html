@@ -28,38 +28,37 @@
     <div class="card mb-4 mr-8">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-4">
-                    <p class="mb-2">Member Name</p>
-                    <p class="mb-2">Book</p>
-                    <p class="mb-2">Check Out Date</p>
-                    <p class="mb-2">Return Date</p>
-                </div>
-
-                <div class="col-md-4">
-                    <strong><p class="mb-2" th:text="${member.firstName} +' '+${member.lastName}"></p></strong>
-                    <strong><p class="mb-2" th:text="${book.title}"></p></strong>
-                    <strong><p class="mb-2" th:text="${transaction.checkedOutDate}"></p></strong>
-                    <strong><p class="mb-2" th:text="${transaction.returnDate}"></p></strong>
-                </div>
+                <table  class="table p-4">
+                    <thead>
+                        <td >Member Name</td>
+                        <td >Books</td>
+                        <td >Check Out Date</td>
+                        <td >Return Date</td>
+                    </thead>
+                    <tbody>
+                    </tr>
+                    <div th:each="bookWithDate, rowStat : ${transactionMultiple.booksWithDate}">
+                        <tr>
+                            <td th:if="${rowStat.index == 0}">
+                                <a th:text="${transactionMultiple.member?.firstName} +' '+ ${transactionMultiple.member?.lastName}" th:href="@{/members/{id}(id=${transactionMultiple.userId})}"></a>
+                            </td>
+                            <td th:unless="${rowStat.index == 0}"></td>
+                            <td>
+                                <a th:text="${bookWithDate.book.title}" th:href="@{/books/{id}(id=${bookWithDate.book.isbn})}"></a>
+                                <form th:action="@{/return/{isbn}(isbn=${bookWithDate.book.isbn})}" method="post">
+                                    <button type="submit" class="btn btn-info me-3">Return</button>
+                                </form>
+                            </td>
+                            <td th:text="${bookWithDate.checkedOutDate}"></td>
+                            <td th:text="${bookWithDate.returnDate}"></td>
+                        </tr>
+                    </div>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <!-- Buttons with Bootstrap classes to navigate to matches and stats pages -->
-    <div class="row">
-        <div class="col-3 text-left">
-            <form action="/return" th:object="${transaction}" method="post">
-                <input type="hidden" th:field="*{id}" />
-                <input type="hidden" th:field="*{userId}" />
-                <input type="hidden" th:field="*{bookISBN}" />
-                <input type="hidden" th:field="*{checkedOutDate}" />
-                <input type="hidden" th:field="*{returnDate}" />
-                <input type="hidden" th:field="*{member}" />
-                <input type="hidden" th:field="*{book}" />
-                <button type="submit" class="btn btn-info me-3">Return</button>
-            </form>
-        </div>
-    </div>
 </div>
 </body>
 </html>

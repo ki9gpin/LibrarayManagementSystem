@@ -62,16 +62,16 @@
         <tbody>
             <tr th:each ="book : ${books}">
                 <td>
-                    <a th:text="${book.title}" th:href="@{/books/{isbn}(isbn=${book.ISBN})}"></a>
+                    <a th:text="${book.title}" th:href="@{/books/{isbn}(isbn=${book.isbn})}"></a>
                 </td>
-                <td th:text="${book.ISBN}"></td>
+                <td th:text="${book.isbn}"></td>
                 <td th:text="${book.author}"></td>
                 <td th:text="${book.genre}"></td>
                 <td th:text="${book.publisher}"></td>
                 <td th:text="${book.year}"></td>
                 <td th:text="${book.availableCopies}"></td>
                 <td>
-                    <a th:text="Transactions" th:href="@{/transactions/book/{id}(id=${book.ISBN})}"></a>
+                    <a th:text="Transactions" th:href="@{/transactions/book/{id}(id=${book.isbn})}"></a>
                 </td>
             </tr>
         </tbody>
