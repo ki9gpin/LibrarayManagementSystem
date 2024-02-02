@@ -24,6 +24,19 @@ public class TransactionMultiple {
     @ManyToMany(cascade = CascadeType.ALL)
     private List<BookWithDate> booksWithDate;
 
+    public TransactionMultiple() {
+    }
+
+    public TransactionMultiple(long id, long userId, List<String> booksIsbn, LocalDate checkedOutDate, LocalDate returnDate, Member member, List<BookWithDate> booksWithDate) {
+        this.id = id;
+        this.userId = userId;
+        this.booksIsbn = booksIsbn;
+        this.checkedOutDate = checkedOutDate;
+        this.returnDate = returnDate;
+        this.member = member;
+        this.booksWithDate = booksWithDate;
+    }
+
     public long getId() {
         return id;
     }

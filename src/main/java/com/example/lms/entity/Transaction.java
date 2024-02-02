@@ -18,6 +18,7 @@ public class Transaction {
     private String bookISBN;
     private LocalDate checkedOutDate;
     private LocalDate returnDate;
+
     @ManyToOne
     @JoinColumn
     private Member member;

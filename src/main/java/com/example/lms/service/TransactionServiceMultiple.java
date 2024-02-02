@@ -5,6 +5,7 @@ import com.example.lms.entity.BookWithDate;
 import com.example.lms.entity.Member;
 import com.example.lms.entity.TransactionMultiple;
 import com.example.lms.repository.BookRepository;
+import com.example.lms.repository.BookWithDateRepository;
 import com.example.lms.repository.TransactionRepositoryMultiple;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +17,13 @@ import java.util.Optional;
 @Service
 public class TransactionServiceMultiple {
 
-
-    private static long tempTransacionId;
     private final TransactionRepositoryMultiple transactionRepositoryMultiple;
     private final BookRepository bookRepository;
-    public TransactionServiceMultiple(TransactionRepositoryMultiple transactionRepositoryMultiple, BookRepository bookRepository) {
+    private final BookWithDateRepository bookWithDateRepository;
+    public TransactionServiceMultiple(TransactionRepositoryMultiple transactionRepositoryMultiple, BookRepository bookRepository, BookWithDateRepository bookWithDateRepository) {
         this.transactionRepositoryMultiple = transactionRepositoryMultiple;
         this.bookRepository = bookRepository;
+        this.bookWithDateRepository = bookWithDateRepository;
     }
 
     public TransactionMultiple checkOut(TransactionMultiple transactionMultiple, Member member, List<BookWithDate> books) {
@@ -30,8 +31,7 @@ public class TransactionServiceMultiple {
     }
 
     public List<TransactionMultiple> getTransactionsByUserId(long id) {
-        List<TransactionMultiple> transactionsMultiple= transactionRepositoryMultiple.findAllByUserId(id);
-        return transactionsMultiple;
+        return transactionRepositoryMultiple.findAllByUserId(id);
     }
 
     public List<TransactionMultiple> getAllTransactions() {
@@ -64,16 +64,9 @@ public class TransactionServiceMultiple {
         transactionRepositoryMultiple.save(transactionMultiple);
     }
 
-    public static long getTempTransacionId() {
-        return tempTransacionId;
-    }
-
-    public static void setTempTransacionId(long tempTransacionId) {
-        TransactionServiceMultiple.tempTransacionId = tempTransacionId;
-    }
-
     public List<TransactionMultiple> getTransactionByBookISBN(String isbn) {
-
-        return transactionRepositoryMultiple.findAllByBook(bookRepository.findBookByIsbn(isbn).get());
+        Book book = bookRepository.findBookByIsbn(isbn).orElse(null);
+        List<BookWithDate> booksWithDate = bookWithDateRepository.findAllByBook(book);
+        return transactionRepositoryMultiple.findAllByBooksWithDateIn(booksWithDate);
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping
@@ -40,26 +41,22 @@ public class TransactionViewController {
     }
     @GetMapping("/transactions/{id}")
     public String getTransactionByID(@PathVariable long id, Model model){
-        var transactionMultiple = transactionServiceMultiple.getTransactionById(id).get();
+        var transactionMultiple = transactionServiceMultiple.getTransactionById(id).orElse(null);
         model.addAttribute("transactionMultiple",transactionMultiple);
-        model.addAttribute("",transactionMultiple.getId());
-        TransactionServiceMultiple.setTempTransacionId(id);
-//        model.addAttribute("member",transaction.get().getMember());
-//        model.addAttribute("books",transaction.get().getBooks());
+        model.addAttribute("transactionIdMultiple",id);
         return "transaction";
     }
     @GetMapping("/transactions/user/{id}")
     public String getTransactionByUserID(@PathVariable long id, Model model){
         var transactionMultiple =  transactionServiceMultiple.getTransactionsByUserId(id);
-//        List<BookWithDate> books = transactionMultiple.;
         model.addAttribute("transactionsMultiple",transactionMultiple);
         return "transactions";
     }
 
     @GetMapping("/transactions/book/{isbn}")
     public String getTransactionByBookISBN(@PathVariable String isbn, Model model){
-        var transactions = transactionServiceMultiple.getTransactionByBookISBN(isbn);
-        model.addAttribute("transactions",transactions);
+        var transactionsMultiple = transactionServiceMultiple.getTransactionByBookISBN(isbn);
+        model.addAttribute("transactionsMultiple",transactionsMultiple);
         return "transactions";
     }
 
@@ -75,7 +72,7 @@ public class TransactionViewController {
 
     @PostMapping("/check-out-multiple")
     public String checkOutMultipleBook( TransactionMultiple transactionMultiple, Model model){
-        Member member= memberService.getMemberById(transactionMultiple.getUserId()).get();
+        Member member= memberService.getMemberById(transactionMultiple.getUserId()).orElse(null);
         List<String> booksISBN = transactionMultiple.getBooksIsbn();
         List<BookWithDate> books = transactionServiceMultiple.createBooksWithDate( bookService.getBooksByISBN(booksISBN), transactionMultiple.getCheckedOutDate());
         transactionMultiple.setBooksWithDate(books);
@@ -84,41 +81,39 @@ public class TransactionViewController {
         for(BookWithDate book : books){
             bookService.decreaseAvailableCount(book.getBook());
         }
-        memberService.increaseCheckOutCount(member);
+        memberService.increaseCheckOutCount(Objects.requireNonNull(member));
         model.addAttribute("transaction",transaction);
         return "redirect:/transactions/user/"+transaction.getUserId();
     }
 
-    @GetMapping("/check-out/{isbn}")
-    public String checkOutBookByISBNView(@PathVariable String isbn, Model model){
-        List<Member> members = memberService.getAllMembers();
-        Book book = bookService.getBookByISBN(isbn).get();
-        List<Book> books = new ArrayList<>();
-        books.add(book);
-        model.addAttribute("transactionMultiple", new TransactionMultiple());
-        model.addAttribute("members", members);
-        model.addAttribute("books",books);
-        return "check-out-multiple";
-    }
-
-    @PostMapping("/check-out")
-    public String checkOutBook( TransactionDTO transactionDTO, Model model){
-        Member member= memberService.getMemberById(transactionDTO.getUserId()).get();
-        System.out.println(transactionDTO.getBookISBN());
-        Book book = bookService.getBookByISBN(transactionDTO.getBookISBN()).get();
-        var transaction =  transactionService.checkOut(transactionDTO,member,book);
-        bookService.decreaseAvailableCount(book);
-        memberService.increaseCheckOutCount(member);
-        model.addAttribute("transaction",transaction);
-        return "redirect:/transactions/user/"+transactionDTO.getUserId();
-    }
+//    @GetMapping("/check-out/{isbn}")
+//    public String checkOutBookByISBNView(@PathVariable String isbn, Model model){
+//        List<Member> members = memberService.getAllMembers();
+//        Book book = bookService.getBookByISBN(isbn).orElse(null);
+//        List<Book> books = new ArrayList<>();
+//        books.add(book);
+//        model.addAttribute("transactionMultiple", new TransactionMultiple());
+//        model.addAttribute("members", members);
+//        model.addAttribute("books",books);
+//        return "check-out-multiple";
+//    }
+//
+//    @PostMapping("/check-out")
+//    public String checkOutBook( TransactionDTO transactionDTO, Model model){
+//        Member member= memberService.getMemberById(transactionDTO.getUserId()).orElse(null);
+//        System.out.println(transactionDTO.getBookISBN());
+//        Book book = bookService.getBookByISBN(transactionDTO.getBookISBN()).orElse(null);
+//        var transaction =  transactionService.checkOut(transactionDTO,member,book);
+//        bookService.decreaseAvailableCount(Objects.requireNonNull(book));
+//        memberService.increaseCheckOutCount(Objects.requireNonNull(member));
+//        model.addAttribute("transaction",transaction);
+//        return "redirect:/transactions/user/"+transactionDTO.getUserId();
+//    }
 
     @PostMapping("/return/{isbn}")
-    public String returnBook(@PathVariable String isbn, Model model){
-//        Member member= memberService.getMemberById(transaction.getUserId()).get();
-
-        TransactionMultiple transactionMultiple = transactionServiceMultiple.getTransactionById(TransactionServiceMultiple.getTempTransacionId()).get();
-        transactionServiceMultiple.returnBookView(transactionMultiple,isbn);
+    public String returnBook(@PathVariable String isbn,  @RequestParam("transactionIdMultiple") long transactionIdMultiple,  Model model){
+        TransactionMultiple transactionMultiple = transactionServiceMultiple.getTransactionById(transactionIdMultiple).orElse(null);
+        transactionServiceMultiple.returnBookView(Objects.requireNonNull(transactionMultiple),isbn);
         bookService.increaseAvailableCount(isbn);
         memberService.decreaseCheckOutCount(transactionMultiple.getMember());
         model.addAttribute("transaction",transactionMultiple);

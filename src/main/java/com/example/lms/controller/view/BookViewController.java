@@ -20,8 +20,6 @@ import java.util.Optional;
 public class BookViewController {
 
     final BookService bookService;
-    public Logger LOGGER = LoggerFactory.getLogger(BookController.class);
-
     public BookViewController(BookService bookService) {
         this.bookService = bookService;
     }
@@ -37,7 +35,6 @@ public class BookViewController {
     public String getBookByISBN(Model model, @PathVariable String isbn) throws BookNotFoundException {
         Optional<Book> book = bookService.getBookByISBN(isbn);
         if (book.isPresent()){
-//            book.get().setYear(book.get().getYear().\\\);
             model.addAttribute("book", book.get());
         } else {
             throw new BookNotFoundException("Book not available");
@@ -47,7 +44,6 @@ public class BookViewController {
 
     @GetMapping("/add-book")
     public String getAddBook(Model model){
-
         model.addAttribute("book", new Book());
         return "add-book";
     }
@@ -77,17 +73,8 @@ public class BookViewController {
 
     @PostMapping("/update-book/{isbn}")
     public String updateBookEntry(@ModelAttribute("book") Book book, @PathVariable String isbn ) throws BookNotFoundException {
-        System.out.println(book.getAvailableCopies());
-        LOGGER.debug("available copies "+book.getAvailableCopies());
         book.setYear(book.getYear());
         bookService.updateBookEntry(isbn,book);
         return "redirect:/books/"+book.getIsbn();
     }
-
-//    @GetMapping("/delete-book/{isbn}")
-//    public String deleteBookEntry(@PathVariable String isbn ) {
-//        bookService.deleteBookEntry(isbn);
-//        return "redirect:/books";
-//    }
-
 }

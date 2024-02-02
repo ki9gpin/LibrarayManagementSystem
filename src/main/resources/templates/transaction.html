@@ -46,6 +46,7 @@
                             <td>
                                 <a th:text="${bookWithDate.book.title}" th:href="@{/books/{id}(id=${bookWithDate.book.isbn})}"></a>
                                 <form th:action="@{/return/{isbn}(isbn=${bookWithDate.book.isbn})}" method="post">
+                                    <input type="hidden" name="transactionIdMultiple" th:value="${transactionIdMultiple}" />
                                     <button type="submit" class="btn btn-info me-3">Return</button>
                                 </form>
                             </td>

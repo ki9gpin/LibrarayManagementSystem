@@ -1,6 +1,6 @@
 package com.example.lms.repository;
 
-import com.example.lms.entity.Book;
+import com.example.lms.entity.BookWithDate;
 import com.example.lms.entity.TransactionMultiple;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -12,5 +12,5 @@ public interface TransactionRepositoryMultiple extends JpaRepository<Transaction
 
     List<TransactionMultiple> findAllByUserId(long id);
 
-    List<TransactionMultiple> findAllByBook(Book book);
+    List<TransactionMultiple> findAllByBooksWithDateIn(List<BookWithDate> booksWithDate);
 }

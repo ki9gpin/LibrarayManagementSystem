@@ -18,9 +18,8 @@ public class Book {
     private String title;
     private String author;
     private String genre;
-//    private long   pages;
     private String publisher;
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MMM dd, yyyy"/*"dd-MM-yyyy"*/)
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MMM dd, yyyy"   /*"dd-MM-yyyy"*/)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date year;
     private long availableCopies;
