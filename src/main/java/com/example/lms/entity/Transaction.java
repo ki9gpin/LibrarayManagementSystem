@@ -1,43 +1,42 @@
 package com.example.lms.entity;
 
 import jakarta.persistence.*;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
+
 
 @Entity
 @Component
 public class Transaction {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_id_generator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
     private long userId;
-    private String bookISBN;
+    private List<String> booksIsbn;
     private LocalDate checkedOutDate;
     private LocalDate returnDate;
-
     @ManyToOne
     @JoinColumn
     private Member member;
 
-    @ManyToOne
-    @JoinColumn
-    private Book book;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<BookWithDate> booksWithDate;
 
     public Transaction() {
     }
 
-    public Transaction(long userId, String bookISBN, LocalDate checkedOutDate, LocalDate returnDate, Member member, Book book) {
+    public Transaction(long id, long userId, List<String> booksIsbn, LocalDate checkedOutDate, LocalDate returnDate, Member member, List<BookWithDate> booksWithDate) {
+        this.id = id;
         this.userId = userId;
-        this.bookISBN = bookISBN;
+        this.booksIsbn = booksIsbn;
         this.checkedOutDate = checkedOutDate;
         this.returnDate = returnDate;
         this.member = member;
-        this.book = book;
+        this.booksWithDate = booksWithDate;
     }
+
     public long getId() {
         return id;
     }
@@ -52,14 +51,6 @@ public class Transaction {
 
     public void setUserId(long userId) {
         this.userId = userId;
-    }
-
-    public String getBookISBN() {
-        return bookISBN;
-    }
-
-    public void setBookISBN(String bookISBN) {
-        this.bookISBN = bookISBN;
     }
 
     public LocalDate getCheckedOutDate() {
@@ -86,11 +77,19 @@ public class Transaction {
         this.member = member;
     }
 
-    public Book getBook() {
-        return book;
+    public List<BookWithDate> getBooksWithDate() {
+        return booksWithDate;
     }
 
-    public void setBook(Book book) {
-        this.book = book;
+    public void setBooksWithDate(List<BookWithDate> books) {
+        this.booksWithDate = books;
+    }
+
+    public List<String> getBooksIsbn() {
+        return booksIsbn;
+    }
+
+    public void setBooksIsbn(List<String> booksIsbn) {
+        this.booksIsbn = booksIsbn;
     }
 }

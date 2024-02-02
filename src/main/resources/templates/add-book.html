@@ -20,7 +20,7 @@
     <form action="#" th:action="@{/add-book}" th:object="${book}" method="post">
         <input type="text"  th:field="*{title}"
                 placeholder="Title" class="form-control mb-4 col-2" >
-        <input type="text"  th:field="*{ISBN}"
+        <input type="text"  th:field="*{isbn}"
                 placeholder="ISBN" class="form-control mb-4 col-2">
         <input type="text"  th:field="*{author}"
                 placeholder="Author" class="form-control mb-4 col-2">
@@ -28,7 +28,7 @@
                 placeholder="Genre" class="form-control mb-4 col-2">
         <input type="text"  th:field="*{publisher}"
                 placeholder="Book Publisher" class="form-control mb-4 col-2">
-        <input type="text"  th:field="*{year}"
+        <input type="datetime-local"  th:field="*{year}"
                 placeholder="Publication Year" class="form-control mb-4 col-2">
         <input type="text"  th:field="*{availableCopies}"
                placeholder="Copies Available" class="form-control mb-4 col-2">

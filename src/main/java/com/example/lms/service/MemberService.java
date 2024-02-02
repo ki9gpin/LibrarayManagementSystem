@@ -54,13 +54,13 @@ public class MemberService {
         memberRepository.deleteById(id);
     }
 
-    public List<Transaction> getTransactionsByMemberId(long id) {
-        return transactionRepository.findTransactionByUserId(id);
+    public List<Transaction> getTransactionsByUserId(long id) {
+        return transactionRepository.findAllByUserId(id);
     }
 
     @Transactional
-    public void increaseCheckOutCount(Member member) {
-        member.setBooksCheckedOut(member.getBooksCheckedOut()+1);
+    public void increaseCheckOutCount(Member member,int numberOfBooks) {
+        member.setBooksCheckedOut(member.getBooksCheckedOut()+numberOfBooks);
         memberRepository.save(member);
     }
 

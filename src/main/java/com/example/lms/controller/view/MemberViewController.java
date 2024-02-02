@@ -42,14 +42,13 @@ public class MemberViewController {
 
     @GetMapping("/members/{ID}/transactions")
     public String getTransactionsByMemberID(Model model, @PathVariable long ID)  {
-        List<Transaction> transactions = memberService.getTransactionsByMemberId(ID);
+        List<Transaction> transactions = memberService.getTransactionsByUserId(ID);
         model.addAttribute("transactions",transactions);
         return "member";
     }
 
     @GetMapping("/add-member")
     public String getAddBook(Model model){
-
         model.addAttribute("member", new Member());
         return "add-member";
     }
@@ -80,7 +79,7 @@ public class MemberViewController {
     @PostMapping("/update-member/{userid}")
     public String updateMemberEntry(@ModelAttribute("member") Member member, @PathVariable long userid ) throws MemberNotFoundException {
         memberService.updateMemberEntry(userid,member);
-        return "redirect:/members/"+member.getId();
+        return "redirect:/members/"+userid;
     }
 
     @GetMapping("/delete-member/{userid}")

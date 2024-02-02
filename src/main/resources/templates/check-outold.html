@@ -17,14 +17,14 @@
     </div>
     <br>
     <br>
-    <form action="#" th:action="@{/check-out-multiple}" th:object="${transactionMultiple}" method="post">
+    <form action="#" th:action="@{/check-out}" th:object="${transaction}" method="post">
 
         <select th:field="*{userId}">
-            <option th:each="member: ${members}" th:value="${member.id}"  th:text="${member.firstName}" > Member </option>
+            <option th:each="member: ${members}" th:value="${member.id}"  th:text="${member.firstName}" >Member </option>
         </select>
 
-        <select  th:field="*{booksISBN}" multiple>
-            <option  th:each="book: ${books}"  th:value="${book.isbn}" th:text="${book.title}" > Book </option>
+        <select  th:field="*{bookISBN}">
+            <option th:value="${book.ISBN}" th:text="${book.title}"  >Book </option>
         </select>
 
         <input type="date"  th:field="*{checkedOutDate}"

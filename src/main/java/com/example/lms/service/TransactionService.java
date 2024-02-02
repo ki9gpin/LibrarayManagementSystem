@@ -1,71 +1,72 @@
 package com.example.lms.service;
 
-import com.example.lms.dto.TransactionDTO;
 import com.example.lms.entity.Book;
+import com.example.lms.entity.BookWithDate;
 import com.example.lms.entity.Member;
 import com.example.lms.entity.Transaction;
-import com.example.lms.entity.TransactionMultiple;
+import com.example.lms.repository.BookRepository;
+import com.example.lms.repository.BookWithDateRepository;
 import com.example.lms.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class TransactionService {
 
-    final TransactionRepository transactionRepository;
-
-    public TransactionService(TransactionRepository transactionRepository) {
+    private final TransactionRepository transactionRepository;
+    private final BookRepository bookRepository;
+    private final BookWithDateRepository bookWithDateRepository;
+    public TransactionService(TransactionRepository transactionRepository, BookRepository bookRepository, BookWithDateRepository bookWithDateRepository) {
         this.transactionRepository = transactionRepository;
+        this.bookRepository = bookRepository;
+        this.bookWithDateRepository = bookWithDateRepository;
+    }
+
+    public Transaction checkOut(Transaction transaction, Member member, List<BookWithDate> books) {
+        return transactionRepository.save(transaction);
+    }
+
+    public List<Transaction> getTransactionsByUserId(long id) {
+        return transactionRepository.findAllByUserId(id);
     }
 
     public List<Transaction> getAllTransactions() {
         return transactionRepository.findAll();
     }
 
-    public List<Transaction> getTransactionByUserId(long id) {
-        return transactionRepository.findTransactionByUserId(id);
-    }
-
-    public List<Transaction> getTransactionByBookISBN(String isbn) {
-        return transactionRepository.findTransactionByBookISBN(isbn);
-    }
-
-    public Transaction checkOut(TransactionDTO transactionDTO, Member member, Book book) {
-            Transaction transaction = new Transaction();
-            transaction.setBookISBN(transactionDTO.getBookISBN());
-            transaction.setUserId(transactionDTO.getUserId());
-            transaction.setCheckedOutDate(LocalDate.now());
-            transaction.setReturnDate(null);
-            transaction.setMember(member);
-            transaction.setBook(book);
-            return transactionRepository.save(transaction);
-    }
-
-    public Transaction returnBook(TransactionDTO transactionDTO) {
-        Transaction transaction =  transactionRepository.findTransactionByBookISBNAndUserId(transactionDTO.getBookISBN(), transactionDTO.getUserId());
-        transaction.setReturnDate(LocalDateTime.now().toLocalDate());
-        return transactionRepository.save(transaction);
-    }
-
     public Optional<Transaction> getTransactionById(long id) {
+
         return transactionRepository.findById(id);
     }
 
-    public Member getMemberById(long id) {
-        return transactionRepository.findMemberById(id);
+    public List<BookWithDate> createBooksWithDate(List<Book> booksByISBN, LocalDate checkedOutDate) {
+        List<BookWithDate> booksWithDate = new ArrayList<>();
+
+        for(Book book :  booksByISBN){
+            BookWithDate bookWithDate = new BookWithDate(book,checkedOutDate,null);
+            booksWithDate.add(bookWithDate);
+        }
+        return  booksWithDate;
     }
 
-    public Book getBookById(long id) {
-        return transactionRepository.findBookById(id);
+    public void returnBookView(Transaction transaction, String isbn) {
+        List<BookWithDate> booksWithDate = transaction.getBooksWithDate();
+        for(BookWithDate bookWithDate : booksWithDate){
+            if(bookWithDate.getBook().getIsbn().equals(isbn)){
+                bookWithDate.setReturnDate(LocalDate.now());
+            }
+        }
+        transaction.setBooksWithDate(booksWithDate);
+        transactionRepository.save(transaction);
     }
 
-    public Transaction returnBookView(Transaction transaction) {
-        transaction.setReturnDate(LocalDate.now());
-        return transactionRepository.save(transaction);
+    public List<Transaction> getTransactionByBookISBN(String isbn) {
+        Book book = bookRepository.findBookByIsbn(isbn).orElse(null);
+        List<BookWithDate> booksWithDate = bookWithDateRepository.findAllByBook(book);
+        return transactionRepository.findAllByBooksWithDateIn(booksWithDate);
     }
-
 }

@@ -45,7 +45,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each ="transaction : ${transactionsMultiple}">
+            <tr th:each ="transaction : ${transactions}">
                 <td>
                     <a th:text="${transaction.id}" th:href="@{/transactions/{id}(id=${transaction.id})}"></a>
                 </td>

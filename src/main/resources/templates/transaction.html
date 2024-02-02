@@ -37,16 +37,16 @@
                     </thead>
                     <tbody>
                     </tr>
-                    <div th:each="bookWithDate, rowStat : ${transactionMultiple.booksWithDate}">
+                    <div th:each="bookWithDate, rowStat : ${transaction.booksWithDate}">
                         <tr>
                             <td th:if="${rowStat.index == 0}">
-                                <a th:text="${transactionMultiple.member?.firstName} +' '+ ${transactionMultiple.member?.lastName}" th:href="@{/members/{id}(id=${transactionMultiple.userId})}"></a>
+                                <a th:text="${transaction.member?.firstName} +' '+ ${transaction.member?.lastName}" th:href="@{/members/{id}(id=${transaction.userId})}"></a>
                             </td>
                             <td th:unless="${rowStat.index == 0}"></td>
                             <td>
                                 <a th:text="${bookWithDate.book.title}" th:href="@{/books/{id}(id=${bookWithDate.book.isbn})}"></a>
                                 <form th:action="@{/return/{isbn}(isbn=${bookWithDate.book.isbn})}" method="post">
-                                    <input type="hidden" name="transactionIdMultiple" th:value="${transactionIdMultiple}" />
+                                    <input type="hidden" name="transactionId" th:value="${transactionId}" />
                                     <button type="submit" class="btn btn-info me-3">Return</button>
                                 </form>
                             </td>
