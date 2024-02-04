@@ -1,6 +1,7 @@
 package com.example.lms.controller.view;
 
 import com.example.lms.entity.*;
+import com.example.lms.error.BookNotFoundException;
 import com.example.lms.service.BookService;
 import com.example.lms.service.MemberService;
 import com.example.lms.service.TransactionService;
@@ -91,7 +92,7 @@ public class TransactionViewController {
     }
 
     @PostMapping("/return/{isbn}")
-    public String returnBook(@PathVariable String isbn,  @RequestParam("transactionId") long transactionId,  Model model){
+    public String returnBook(@PathVariable String isbn,  @RequestParam("transactionId") long transactionId,  Model model) throws BookNotFoundException {
         Transaction transaction = transactionService.getTransactionById(transactionId).orElse(null);
         transactionService.returnBookView(Objects.requireNonNull(transaction),isbn);
         bookService.increaseAvailableCount(isbn);

@@ -32,42 +32,19 @@ public class BookService {
     }
 
     public Book updateBookEntry(String isbn, Book book) throws BookNotFoundException {
-        Optional<Book> optBook = bookRepository.findBookByIsbn(isbn);
-        System.out.println("inside update book entry");
-        if(optBook.isPresent()){
-            System.out.println("Updating book. Book is available.");
-//            Book storedBook=optBook.get();
-            optBook.get().setTitle(book.getTitle());
-            optBook.get().setAuthor(book.getAuthor());
-            optBook.get().setGenre(book.getGenre());
-            optBook.get().setPublisher(book.getPublisher());
-            optBook.get().setYear(book.getYear());
-            optBook.get().setAvailableCopies(book.getAvailableCopies());
-            return bookRepository.save(optBook.get());
-        }else{
-            throw new BookNotFoundException("No book found for the provided ISBN");
-        }
-    }
-
-    public HttpStatus updateBookAvailableCopiesCount(String isbn, long count) throws Exception {
-        Optional<Book> optbook = bookRepository.findBookByIsbn(isbn);
-        if(optbook.isPresent() ){
-            Book storedBook = optbook.get();
-            if(count>=0){
-                storedBook.setAvailableCopies(count);
-                bookRepository.save(storedBook);
-                return HttpStatus.OK;
-            }else{
-                throw new IllegalArgumentException("AvailableCopies must be positive");
-            }
-        }else{
-            throw new BookNotFoundException("No book found for the provided ISBN");
-        }
+        Book bookToSave = bookRepository.findBookByIsbn(isbn).orElseThrow(()-> new BookNotFoundException("Book not found for the provided isbn"));
+            bookToSave.setTitle(book.getTitle());
+            bookToSave.setAuthor(book.getAuthor());
+            bookToSave.setGenre(book.getGenre());
+            bookToSave.setPublisher(book.getPublisher());
+            bookToSave.setYear(book.getYear());
+            bookToSave.setAvailableCopies(book.getAvailableCopies());
+            return bookRepository.save(bookToSave);
     }
 
     @Transactional
     public void deleteBookEntry(String isbn) {
-        bookRepository.deleteByIsbn(isbn);  // ? HttpStatus.OK: HttpStatus.NOT_FOUND;
+        bookRepository.deleteByIsbn(isbn);
     }
 
     @Transactional
@@ -76,18 +53,14 @@ public class BookService {
         bookRepository.save(book);
     }
 
-    @Transactional
-    public void increaseAvailableCount(Book book) {
-        book.setAvailableCopies(book.getAvailableCopies()+1);
-        bookRepository.save(book);
-    }
 
     public List<Book> getBooksByISBN(List<String> booksISBN) {
         return bookRepository.findAllByIsbnIn(booksISBN);
     }
 
-    public void increaseAvailableCount(String isbn) {
-        Book book = bookRepository.findBookByIsbn(isbn).get();
+    @Transactional
+    public void increaseAvailableCount(String isbn) throws BookNotFoundException {
+        Book book = bookRepository.findBookByIsbn(isbn).orElseThrow(()-> new BookNotFoundException("Book not found for the provided isbn"));
         book.setAvailableCopies(book.getAvailableCopies()+1);
         bookRepository.save(book);
     }
