@@ -1,11 +1,14 @@
-package com.example.lms.controller.view;
+package com.example.lms.controller;
 
-import com.example.lms.controller.api.BookController;
 import com.example.lms.entity.Book;
 import com.example.lms.error.BookNotFoundException;
 import com.example.lms.service.BookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,8 +28,9 @@ public class BookViewController {
     }
 
     @GetMapping("/books")
-    public String getAllBooks(Model model){
-        List<Book> books =  bookService.getAllBooks();
+    public String getAllBooks(Pageable pageableReceived, Model model){
+        Pageable pageable = PageRequest.of(pageableReceived.getPageNumber(),pageableReceived.getPageSize(), Sort.by("id").ascending());
+        Page<Book> books =  bookService.getAllBooks(pageable);
         model.addAttribute("books",books);
         return "books";
     }

@@ -1,10 +1,14 @@
-package com.example.lms.controller.view;
+package com.example.lms.controller;
 
 import com.example.lms.entity.*;
 import com.example.lms.error.BookNotFoundException;
 import com.example.lms.service.BookService;
 import com.example.lms.service.MemberService;
 import com.example.lms.service.TransactionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +31,9 @@ public class TransactionViewController {
     }
 
     @GetMapping("/transactions")
-    public String getAllTransactions(Model model){
-        var transactions = transactionService.getAllTransactions();
+    public String getAllTransactions(Pageable pageableReceived, Model model){
+        Pageable pageable = PageRequest.of(pageableReceived.getPageNumber(),pageableReceived.getPageSize(),Sort.by("id").ascending());
+        var transactions = transactionService.getAllTransactions(pageable);
 
         model.addAttribute("transactions", transactions);
         return "transactions";
@@ -55,7 +60,7 @@ public class TransactionViewController {
     }
 
     @GetMapping("/check-out")
-    public String checkOutBookView(Model model){
+    public String checkOutBookView( Model model){
         List<Member> members = memberService.getAllMembers();
         List<Book> books = bookService.getAllBooks();
         model.addAttribute("transaction", new Transaction());

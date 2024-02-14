@@ -60,7 +60,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each ="book : ${books}">
+            <tr th:each ="book : ${books.content}">
                 <td>
                     <a th:text="${book.title}" th:href="@{/books/{isbn}(isbn=${book.isbn})}"></a>
                 </td>
@@ -76,6 +76,19 @@
             </tr>
         </tbody>
     </table>
+    <div>
+        <!-- Previous page link -->
+        <a th:if="${books.hasPrevious()}" th:href="@{'/books?page=' + ${books.previousPageable().getPageNumber()}+ '&size='+${books.pageable.pageSize}}">Previous</a>
+
+        <!-- Page numbers -->
+        <span th:each="pageNumber : ${#numbers.sequence(0, books.totalPages - 1)}">
+                <a th:href="@{'/books?page=' + ${pageNumber} + '&size='+${books.pageable.pageSize}}" th:text="${pageNumber + 1}" th:if="${books.number != pageNumber}"></a>
+                <span th:if="${books.number == pageNumber}" th:text="${pageNumber + 1}"></span>
+            </span>
+
+        <!-- Next page link -->
+        <a th:if="${books.hasNext()}" th:href="@{'/books?page=' + ${books.nextPageable().getPageNumber()}+ '&size='+${books.pageable.pageSize}}">Next</a>
+    </div>
 </div>
 </body>
 </html>

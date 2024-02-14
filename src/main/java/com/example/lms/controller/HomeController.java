@@ -1,4 +1,4 @@
-package com.example.lms.controller.view;
+package com.example.lms.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

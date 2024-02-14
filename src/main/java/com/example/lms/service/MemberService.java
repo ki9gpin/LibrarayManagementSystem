@@ -7,6 +7,8 @@ import com.example.lms.error.MemberNotFoundException;
 import com.example.lms.repository.MemberRepository;
 import com.example.lms.repository.TransactionRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +27,9 @@ public class MemberService {
 
     public List<Member> getAllMembers() {
         return memberRepository.findAll();
+    }
+    public Page<Member> getAllMembers(Pageable pageable) {
+        return memberRepository.findAll(pageable);
     }
 
     public Optional<Member> getMemberById(long id) {

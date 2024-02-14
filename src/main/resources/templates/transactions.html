@@ -45,7 +45,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each ="transaction : ${transactions}">
+            <tr th:each ="transaction : ${transactions.content}">
                 <td>
                     <a th:text="${transaction.id}" th:href="@{/transactions/{id}(id=${transaction.id})}"></a>
                 </td>
@@ -64,6 +64,21 @@
             </tr>
         </tbody>
     </table>
+
+    <div>
+        <!-- Previous page link -->
+        <a th:if="${transactions.hasPrevious()}" th:href="@{'/transactions?page=' + ${transactions.previousPageable().getPageNumber()}+ '&size='+${transactions.pageable?.pageSize}}">Previous</a>
+
+        <!-- Page numbers -->
+        <span th:each="pageNumber : ${#numbers.sequence(0, transactions.totalPages - 1)}">
+                <a th:href="@{'/transactions?page=' + ${pageNumber} + '&size='+${transactions.pageable.pageSize}}" th:text="${pageNumber + 1}" th:if="${transactions.number != pageNumber}"></a>
+                <span th:if="${transactions.number == pageNumber}" th:text="${pageNumber + 1}"></span>
+            </span>
+
+        <!-- Next page link -->
+        <a th:if="${transactions.hasNext()}" th:href="@{'/transactions?page=' + ${transactions.nextPageable().getPageNumber()}+ '&size='+${transactions.pageable.pageSize}}">Next</a>
+    </div>
+
 </div>
 </body>
 </html>

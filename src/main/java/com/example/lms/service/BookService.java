@@ -1,11 +1,11 @@
 package com.example.lms.service;
 
 import com.example.lms.entity.Book;
-import com.example.lms.entity.BookWithDate;
 import com.example.lms.error.BookNotFoundException;
 import com.example.lms.repository.BookRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +19,9 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
+    public Page<Book> getAllBooks(Pageable pageable) {
+        return bookRepository.findAll(pageable);
+    }
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }

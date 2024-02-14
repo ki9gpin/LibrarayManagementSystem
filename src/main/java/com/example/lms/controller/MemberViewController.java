@@ -1,9 +1,13 @@
-package com.example.lms.controller.view;
+package com.example.lms.controller;
 
 import com.example.lms.entity.Member;
 import com.example.lms.entity.Transaction;
 import com.example.lms.error.MemberNotFoundException;
 import com.example.lms.service.MemberService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,8 +27,9 @@ public class MemberViewController {
     }
 
     @GetMapping("/members")
-    public String getAllMembers(Model model){
-        List<Member> members = memberService.getAllMembers();
+    public String getAllMembers(Pageable pageableReceived,  Model model){
+        Pageable pageable = PageRequest.of(pageableReceived.getPageNumber(),pageableReceived.getPageSize(), Sort.by("id").ascending());
+        Page<Member> members = memberService.getAllMembers(pageable);
         model.addAttribute("members",members);
         return "members";
     }

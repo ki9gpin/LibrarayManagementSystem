@@ -7,6 +7,8 @@ import com.example.lms.entity.Transaction;
 import com.example.lms.repository.BookRepository;
 import com.example.lms.repository.BookWithDateRepository;
 import com.example.lms.repository.TransactionRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -34,8 +36,8 @@ public class TransactionService {
         return transactionRepository.findAllByUserId(id);
     }
 
-    public List<Transaction> getAllTransactions() {
-        return transactionRepository.findAll();
+    public Page<Transaction> getAllTransactions(Pageable pageable) {
+        return transactionRepository.findAll(pageable);
     }
 
     public Optional<Transaction> getTransactionById(long id) {
