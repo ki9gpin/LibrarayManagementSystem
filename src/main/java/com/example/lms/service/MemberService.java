@@ -36,23 +36,17 @@ public class MemberService {
         return memberRepository.findById(id);
     }
 
-    public Member createMemberEntry(Member member) {
-        return memberRepository.save(member);
+    public void createMemberEntry(Member member) {
+         memberRepository.save(member);
     }
 
-    public Member updateMemberEntry(long id, Member member) throws MemberNotFoundException {
-        Optional<Member> storedMember = memberRepository.findById(id);
-        if(storedMember.isPresent()){
-            Member memberToSave = storedMember.get();
-            memberToSave.setFirstName(member.getFirstName());
-            memberToSave.setLastName(member.getLastName());
-            memberToSave.setEmail(member.getEmail());
-            memberToSave.setBooksCheckedOut(member.getBooksCheckedOut());
-            memberRepository.save(memberToSave);
-            return memberToSave;
-        }else{
-            throw new MemberNotFoundException("MemberDoesNotExist!");
-        }
+    public void updateMemberEntry(long id, Member member) throws MemberNotFoundException {
+        Member storedMember = memberRepository.findById(id).orElseThrow(()-> new MemberNotFoundException("Member not found"));
+        storedMember.setFirstName(member.getFirstName());
+        storedMember.setLastName(member.getLastName());
+        storedMember.setEmail(member.getEmail());
+        storedMember.setBooksCheckedOut(member.getBooksCheckedOut());
+        memberRepository.save(storedMember);
     }
 
     public void deleteMemberEntry(long id) {
